@@ -27,7 +27,7 @@ extensions:
 receivers:
   # The fluentforward receiver can be used to forward logs from the Docker fluentd logging driver.
   fluentforward:
-    endpoint: 0.0.0.0:8006
+    endpoint: 0.0.0.0:18006
   hostmetrics:
     collection_interval: 10s
     scrapers:
