@@ -32,7 +32,7 @@ extensions:
 receivers:
   smartagent/docker-container-stats:
     type: docker-container-stats
-
+      dockerURL : unix:///hostfs/var/run/docker.sock
   fluentforward:
     endpoint: "${SPLUNK_LISTEN_INTERFACE}:8006"
   hostmetrics:
