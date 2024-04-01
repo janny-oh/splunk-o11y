@@ -30,9 +30,6 @@ extensions:
     #endpoint: "${SPLUNK_LISTEN_INTERFACE}:55679"
 
 receivers:
-  smartagent/docker-container-stats:
-    type: docker-container-stats
-      dockerURL : unix:///hostfs/var/run/docker.sock
   fluentforward:
     endpoint: "${SPLUNK_LISTEN_INTERFACE}:8006"
   hostmetrics:
@@ -115,7 +112,7 @@ processors:
   # libraries can send wrong values from container environments.
   # https://docs.splunk.com/Observability/gdi/opentelemetry/components/resourcedetection-processor.html#ordering-considerations
   resourcedetection:
-    detectors: [gcp, ecs, ec2, azure, system, env]
+    detectors: [gcp, ecs, ec2, azure, system]
     override: true
 
   # Optional: The following processor can be used to add a default "deployment.environment" attribute to the logs and
@@ -181,7 +178,7 @@ service:
       # Use instead when sending to gateway
       #exporters: [otlp, signalfx]
     metrics:
-      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder, smartagent/docker-container-stats]
+      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder]
       processors: [memory_limiter, batch, resourcedetection]
       exporters: [signalfx]
       # Use instead when sending to gateway
