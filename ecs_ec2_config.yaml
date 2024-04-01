@@ -25,6 +25,9 @@ extensions:
     size_mib: ${SPLUNK_BALLAST_SIZE_MIB}
 
 receivers:
+  smartagent/docker-container-stats:
+    type: docker-container-stats
+    dockerURL : unix:///hostfs/var/run/docker.sock
   # The fluentforward receiver can be used to forward logs from the Docker fluentd logging driver.
   fluentforward:
     endpoint: 0.0.0.0:8006
@@ -160,7 +163,7 @@ service:
         #- resource/add_environment
       exporters: [sapm, signalfx]
     metrics:
-      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder, smartagent/ecs-metadata]
+      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder, smartagent/ecs-metadata, smartagent/docker-container-stats]
       processors: [memory_limiter, batch, filter, resourcedetection]
       exporters: [signalfx]
     metrics/internal:
