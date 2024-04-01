@@ -27,7 +27,6 @@ extensions:
 receivers:
   smartagent/docker-container-stats:
     type: docker-container-stats
-      dockerURL: unix:///hostfs/var/run/docker.sock
   # The fluentforward receiver can be used to forward logs from the Docker fluentd logging driver.
   fluentforward:
     endpoint: 0.0.0.0:8006
