@@ -30,24 +30,8 @@ extensions:
     #endpoint: "${SPLUNK_LISTEN_INTERFACE}:55679"
 
 receivers:
-  docker_stats:
-    endpoint: unix:///var/run/docker.sock
-    collection_interval: 15s
-    container_labels_to_metric_labels:
-      my.container.label: my-metric-label
-      my.other.container.label: my-other-metric-label
-    env_vars_to_metric_labels:
-      MY_ENVIRONMENT_VARIABLE: my-metric-label
-      MY_OTHER_ENVIRONMENT_VARIABLE: my-other-metric-label
-    excluded_images:
-      - undesired-container
-      - /.*undesired.*/
-      - another-*-container
-    metrics:
-      container.cpu.usage.percpu:
-        enabled: true
-      container.network.io.usage.tx_dropped:
-        enabled: false
+  smartagent/docker-container-stats:
+    type: docker-container-stats
 
   fluentforward:
     endpoint: "${SPLUNK_LISTEN_INTERFACE}:8006"
@@ -197,7 +181,7 @@ service:
       # Use instead when sending to gateway
       #exporters: [otlp, signalfx]
     metrics:
-      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder, docker_stats]
+      receivers: [hostmetrics, otlp, signalfx, smartagent/signalfx-forwarder, smartagent/docker-container-stats]
       processors: [memory_limiter, batch, resourcedetection]
       exporters: [signalfx]
       # Use instead when sending to gateway
